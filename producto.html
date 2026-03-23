@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="theme-color" content="#0a0908"/>
+  <title>Delear Decants</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+:root{
+  --bg:#0a0908;--bg2:#111009;--bg3:#1a1812;--bg4:#222018;
+  --gold:#c9a84c;--gold2:#e2c46a;--gd:rgba(201,168,76,.12);--gb:rgba(201,168,76,.25);
+  --text:#f2ead6;--t2:#9a8a68;--t3:#5a5040;
+  --bor:rgba(201,168,76,.15);--bor2:rgba(201,168,76,.28);
+  --green:#25D366;--red:#e05252;--stripe:#635BFF;
+  --fd:'Cormorant Garamond',Georgia,serif;--fs:'Inter',sans-serif;--r:12px;--r2:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--fs);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* NAV */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem;background:rgba(10,9,8,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--bor)}
+.nav-back{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--t2);letter-spacing:.05em;font-family:var(--fs);transition:color .2s;cursor:pointer}
+.nav-back:hover{color:var(--gold)}
+.nav-logo{font-family:var(--fd);font-size:1.1rem;font-weight:700;letter-spacing:.22em;color:var(--text)}
+.nav-logo span{color:var(--gold)}
+.nib{background:var(--bg3);border:1px solid var(--bor);border-radius:10px;padding:.48rem .55rem;cursor:pointer;color:var(--text);display:flex;align-items:center;position:relative;transition:border-color .2s}
+.nib:active{opacity:.7}
+.nbadge{position:absolute;top:-7px;right:-7px;border-radius:10px;min-width:18px;height:17px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .28rem;font-family:var(--fs);background:var(--gold);color:#0a0908}
+
+/* CONTENIDO */
+#prodPage{padding-top:4.5rem;min-height:100vh;animation:fadeUp .5s ease both}
+
+/* LAYOUT PRODUCTO */
+.prod-layout{max-width:960px;margin:0 auto;padding:2rem 1.25rem 6rem;display:flex;flex-direction:column;gap:2rem}
+@media(min-width:700px){.prod-layout{flex-direction:row;gap:2.5rem;align-items:flex-start}}
+
+/* IMAGEN */
+.prod-media{flex-shrink:0;position:relative}
+@media(min-width:700px){.prod-media{width:380px;position:sticky;top:5.5rem}}
+.prod-img-box{width:100%;aspect-ratio:1/1;background:var(--bg2);border:1px solid var(--bor);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:6rem;overflow:hidden;position:relative}
+.prod-img-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fav-big{position:absolute;bottom:1rem;right:1rem;display:flex;align-items:center;gap:.4rem;background:rgba(10,9,8,.82);backdrop-filter:blur(8px);border:1px solid var(--bor);border-radius:10px;padding:.5rem .8rem;cursor:pointer;color:var(--t2);font-family:var(--fs);font-size:.75rem;transition:all .2s}
+.fav-big.on{color:#e05252;border-color:#e05252;background:rgba(224,82,82,.1)}
+.fav-big:active{opacity:.7}
+.share-btn{margin-top:.75rem;width:100%;padding:.6rem;background:none;border:1px solid var(--bor);border-radius:10px;color:var(--t2);font-size:.75rem;font-family:var(--fs);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:all .2s}
+.share-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* INFO */
+.prod-info{flex:1;min-width:0}
+.pi-marca{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.pi-nombre{font-family:var(--fd);font-size:clamp(2rem,5vw,3rem);font-weight:600;line-height:1.05;color:var(--text);margin-bottom:.9rem}
+.pi-ocasion{display:flex;flex-wrap:wrap;gap:.38rem;margin-bottom:1rem}
+.oc-tag{display:inline-flex;align-items:center;gap:.28rem;background:var(--bg3);border:1px solid var(--bor);border-radius:20px;padding:.25rem .65rem;font-size:.7rem;color:var(--t2)}
+.pi-desc{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem}
+
+/* NOTAS */
+.notas-sec{margin-bottom:1.25rem}
+.pi-sec-title{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.65rem}
+.piramide{display:flex;flex-direction:column;gap:.55rem}
+.pir-tier{display:flex;align-items:center;gap:.65rem}
+.pir-label{font-size:.65rem;color:var(--t3);min-width:52px;letter-spacing:.06em;text-transform:uppercase}
+.pir-chips{display:flex;flex-wrap:wrap;gap:.3rem}
+.nota-chip{display:inline-block;padding:.22rem .55rem;border-radius:14px;font-size:.68rem;font-family:var(--fs)}
+.nc-c{background:rgba(201,168,76,.08);color:var(--gold);border:1px solid var(--bor)}
+.nc-h{background:rgba(224,82,82,.07);color:#d4736e;border:1px solid rgba(224,82,82,.15)}
+.nc-f{background:rgba(100,80,60,.15);color:var(--t2);border:1px solid var(--bor)}
+
+/* QUICK INFO */
+.qi-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1.5rem}
+.qi{background:var(--bg3);border:1px solid var(--bor);border-radius:var(--r);padding:.7rem .85rem}
+.qi-l{display:block;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:.25rem}
+.qi-v{display:block;font-size:.82rem;font-weight:500;color:var(--text)}
+
+/* TAMAÑOS */
+.pi-sec-title2{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.6rem;margin-top:1.5rem}
+.tams{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.ptam{flex:1;min-width:72px;padding:.72rem .4rem;border:1px solid var(--bor);background:var(--bg3);border-radius:10px;cursor:pointer;text-align:center;transition:all .18s;font-family:var(--fs)}
+.ptam:active{border-color:var(--gold)}
+.ptam.on{border-color:var(--gold);background:rgba(201,168,76,.1)}
+.ptam.bot-style{border-style:dashed;border-color:var(--gb)}
+.ptam.bot-style.on{border-style:solid}
+.ptam-ml{display:block;font-size:.92rem;font-weight:600;color:var(--text);margin-bottom:.12rem}
+.ptam-tipo{display:block;font-size:.56rem;color:var(--t3);margin-bottom:.12rem;text-transform:uppercase;letter-spacing:.05em}
+.ptam-p{display:block;font-size:.8rem;color:var(--gold);font-weight:600}
+
+/* BTNS COMPRA */
+.buy-btns{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.75rem}
+@media(min-width:480px){.buy-btns{flex-direction:row}}
+.btn-add-page{flex:1;padding:.82rem;background:var(--gold);color:#0a0908;border:none;border-radius:var(--r);font-size:.85rem;font-weight:700;cursor:pointer;font-family:var(--fs);display:flex;align-items:center;justify-content:center;gap:.5rem;transition:background .2s}
+.btn-add-page:active{background:var(--gold2)}
+.btn-wha-prod{flex:1;padding:.82rem;background:rgba(37,211,102,.1);color:var(--green);border:1px solid rgba(37,211,102,.25);border-radius:var(--r);font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.45rem;transition:all .2s;cursor:pointer}
+.btn-wha-prod:active{background:rgba(37,211,102,.18)}
+
+/* BARRA FIJA MOBILE */
+.buy-bar{position:fixed;bottom:0;left:0;right:0;z-index:150;background:rgba(10,9,8,.96);backdrop-filter:blur(12px);border-top:1px solid var(--bor2);padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+@media(min-width:700px){.buy-bar{display:none}}
+.bb-info{display:flex;flex-direction:column;gap:.12rem;min-width:0}
+.bb-n{font-size:.78rem;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bb-p{font-size:.85rem;font-weight:700;color:var(--gold)}
+
+/* RELACIONADOS */
+.relacionados{padding:2.5rem 0;border-top:1px solid var(--bor)}
+.container{max-width:960px;margin:0 auto;padding:0 1.25rem}
+.sec-header{text-align:center;margin-bottom:1.5rem}
+.sec-header h2{font-family:var(--fd);font-size:1.75rem;font-weight:600;color:var(--text);margin-bottom:.3rem}
+
+/* MINI CARDS (relacionados) */
+.rel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}
+@media(min-width:600px){.rel-grid{grid-template-columns:repeat(4,1fr)}}
+.rcard{background:var(--bg2);border:1px solid var(--bor);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all .2s}
+.rcard:hover{border-color:var(--gb);transform:translateY(-2px)}
+.rcard-img{width:100%;aspect-ratio:1/1;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden}
+.rcard-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.rcard-body{padding:.65rem .7rem}
+.rcard-marca{font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.15rem}
+.rcard-nombre{font-family:var(--fd);font-size:.95rem;font-weight:600;color:var(--text);line-height:1.2;margin-bottom:.2rem}
+.rcard-precio{font-size:.78rem;color:var(--t2)}
+
+/* WHA FLOTANTE */
+.wha-float{position:fixed;bottom:5.5rem;right:1.1rem;z-index:149;width:50px;height:50px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.35);transition:all .3s}
+@media(max-width:699px){.wha-float{display:none}}
+@media(min-width:700px){.wha-float{bottom:1.25rem}}
+.wha-float:active{transform:scale(.9)}
+
+/* CARRITO */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.on{opacity:1;pointer-events:all}
+.cp{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--bor2);border-radius:20px 20px 0 0;z-index:400;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:90vh}
+@media(min-width:600px){.cp{top:0;bottom:0;right:0;left:auto;width:420px;border-radius:0;border-top:none;border-left:1px solid var(--bor2);transform:translateX(100%);max-height:100vh}}
+.cp.open{transform:translateY(0)}
+@media(min-width:600px){.cp.open{transform:translateX(0)}}
+.cp-hd{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.4rem;border-bottom:1px solid var(--bor);flex-shrink:0}
+.cp-title{font-family:var(--fd);font-size:1.2rem;font-weight:600}
+.cp-close{background:var(--bg3);border:1px solid var(--bor);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2)}
+.cp-items{flex:1;overflow-y:auto;padding:1rem 1.4rem}
+.cp-empty{text-align:center;padding:2.5rem 1rem;color:var(--t2);display:flex;flex-direction:column;align-items:center;gap:.65rem}
+.cp-empty svg{opacity:.25}
+.cp-empty p{font-family:var(--fd);font-size:1.1rem}
+.cp-empty span{font-size:.78rem;color:var(--t3)}
+.cp-item{display:flex;gap:.75rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--bor)}
+.cp-item:last-child{border-bottom:none}
+.ci-img{width:44px;height:44px;border-radius:9px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;overflow:hidden}
+.ci-img img{width:100%;height:100%;object-fit:cover}
+.ci-n{font-size:.86rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-s{font-size:.62rem;color:var(--gold);margin-top:.08rem}
+.ci-ctrl{display:flex;align-items:center;gap:.35rem;margin-top:.38rem}
+.qb{width:24px;height:24px;border:1px solid var(--bor);background:var(--bg3);border-radius:6px;cursor:pointer;font-size:.9rem;color:var(--text);display:flex;align-items:center;justify-content:center;font-family:var(--fs);transition:all .18s}
+.qb:active{background:var(--gold);color:#0a0908;border-color:var(--gold)}
+.qv{font-size:.82rem;font-weight:600;min-width:20px;text-align:center}
+.qx{background:none;border:none;cursor:pointer;color:var(--t3);font-size:.7rem;font-family:var(--fs);padding:.12rem .3rem;border-radius:4px}
+.qx:active{color:var(--red)}
+.ci-p{font-size:.9rem;font-weight:700;color:var(--text);white-space:nowrap}
+.cp-footer{padding:1rem 1.4rem;border-top:1px solid var(--bor);flex-shrink:0;display:flex;flex-direction:column;gap:.4rem}
+.cp-res{margin-bottom:.5rem}
+.cr{display:flex;justify-content:space-between;font-size:.81rem;color:var(--t2);margin-bottom:.32rem}
+.cr.total{color:var(--text);font-weight:700;font-size:.95rem;border-top:1px solid var(--bor);padding-top:.5rem;margin-top:.25rem}
+.envio-banner{border-radius:8px;padding:.5rem .75rem;text-align:center;font-size:.75rem;font-weight:500;margin-bottom:.35rem}
+.envio-banner.gratis{background:rgba(37,211,102,.1);color:var(--green);border:1px solid rgba(37,211,102,.2)}
+.envio-banner.pendiente{background:var(--gd);color:var(--gold);border:1px solid var(--bor2)}
+.envio-banner strong{font-weight:700}
+.btn-stripe-main{width:100%;padding:.82rem;background:var(--stripe);color:#fff;border:none;border-radius:var(--r);font-size:.85rem;font-weight:600;cursor:pointer;font-family:var(--fs);display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .2s}
+.btn-stripe-main:active{background:#5048e5}
+.btn-wha-cp{width:100%;padding:.75rem;background:rgba(37,211,102,.1);color:var(--green);border:1px solid rgba(37,211,102,.25);border-radius:var(--r);font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--fs);display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .2s}
+.btn-wha-cp:active{background:rgba(37,211,102,.18)}
+.cp-secure{text-align:center;font-size:.63rem;color:var(--t3)}
+
+.toast{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg3);color:var(--text);padding:.68rem 1.2rem;border-radius:10px;font-size:.77rem;font-family:var(--fs);border:1px solid var(--bor2);border-left:3px solid var(--gold);opacity:0;transition:all .28s;z-index:999;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.loading{display:flex;align-items:center;justify-content:center;height:60vh}
+.spinner{width:32px;height:32px;border:2px solid var(--bor2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Catálogo
+  </a>
+  <div class="nav-logo">DELEAR <span>DECANTS</span>.</div>
+  <button class="nib" id="btnCarrito" aria-label="Carrito">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    <span class="nbadge" id="cartCount" style="display:none">0</span>
+  </button>
+</nav>
+
+<div id="prodPage">
+  <div class="loading"><div class="spinner"></div></div>
+</div>
+
+<!-- RELACIONADOS -->
+<section class="relacionados" id="relacionados" style="display:none">
+  <div class="container">
+    <div class="sec-header"><h2>También te puede gustar</h2></div>
+    <div class="rel-grid" id="relGrid"></div>
+  </div>
+</section>
+
+<!-- WHA FLOTANTE -->
+<a href="https://wa.me/5215539250084" class="wha-float" id="whaFloat" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- BARRA FIJA MOBILE -->
+<div class="buy-bar" id="buyBar" style="display:none">
+  <div class="bb-info">
+    <span class="bb-n" id="bbNombre"></span>
+    <span class="bb-p" id="bbPrecio"></span>
+  </div>
+  <div style="display:flex;gap:.5rem;flex-shrink:0">
+    <!-- WA compacto en la barra -->
+    <a id="bbWha" href="#" target="_blank" rel="noopener"
+       style="width:44px;height:44px;border-radius:10px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.28);display:flex;align-items:center;justify-content:center;color:#25D366;flex-shrink:0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+    <!-- Agregar al carrito -->
+    <button style="background:var(--gold);color:#0a0908;border:none;border-radius:10px;padding:.65rem 1.25rem;font-size:.8rem;font-weight:700;cursor:pointer;font-family:var(--fs);white-space:nowrap" onclick="addCartPP()">+ Agregar</button>
+  </div>
+</div>
+
+<!-- CARRITO -->
+<div class="overlay" id="overlay" onclick="cerrarCarrito()"></div>
+<div class="cp" id="cp">
+  <div class="cp-hd">
+    <span class="cp-title">Mi carrito</span>
+    <button class="cp-close" onclick="cerrarCarrito()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="cp-items" id="cpItems"></div>
+  <div class="cp-footer" id="cpFooter" style="display:none">
+    <div class="envio-banner" id="envioBanner"></div>
+    <div class="cp-res">
+      <div class="cr"><span>Subtotal</span><span id="cpSub">$0</span></div>
+      <div class="cr"><span>Envío</span><span id="cpEnvio">$130 MXN</span></div>
+      <div class="cr total"><span>Total</span><span id="cpTotal">$0</span></div>
+    </div>
+    <button class="btn-stripe-main" id="btnStripe">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Pagar con tarjeta (Stripe)
+    </button>
+    <button class="btn-wha-cp" id="btnWha">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Cotizar por WhatsApp
+    </button>
+    <p class="cp-secure">🔒 Pago 100% seguro · Stripe · SSL</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WHA = '5215539250084';
+const ENVIO = 130;
+const ENVIO_GRATIS = 600;
+
+/* ---- CATÁLOGO ---- */
+const CAT_BASE = [
+  {id:1,slug:'khamra-qahwa',nombre:'Khamra Qahwa',marca:'Al Haramain',cat:'arabe',emoji:'🔥',nuevo:false,foto:'',notas:{c:['Café árabe','Cardamomo'],h:['Especias orientales','Rosa'],f:['Oud','Almizcle','Ámbar']},desc:'Evoca el café árabe tradicional mezclado con especias orientales y oud. Cálido, especiado e intenso.',ocasion:['Noche','Cita','Eventos'],intensidad:'Intenso',duracion:'8h+',genero:'Unisex',temporada:'Todo el año',precios:{'3ml':45,'5ml':65,'10ml':120},bot:1800},
+  {id:2,slug:'oddysey-aqua',nombre:'Oddysey Aqua',marca:'Armaf',cat:'arabe',emoji:'🌊',nuevo:false,foto:'',notas:{c:['Agua marina','Bergamota'],h:['Jazmín','Lino'],f:['Cedro','Almizcle blanco']},desc:'La esencia fresca del océano en una botella. Notas acuáticas que te transportan a la orilla del mar.',ocasion:['Día','Trabajo','Deporte'],intensidad:'Ligero',duracion:'4–6h',genero:'Masculino',temporada:'Primavera / Verano',precios:{'3ml':45,'5ml':65,'10ml':110},bot:1500},
+  {id:3,slug:'mandarin-sky',nombre:'Mandarin Sky',marca:'Armaf',cat:'arabe',emoji:'🍊',nuevo:true,foto:'',notas:{c:['Mandarina','Naranja','Bergamota'],h:['Jazmín','Flor de azahar'],f:['Sándalo','Almizcle']},desc:'Sinfonía cítrica que evoca el amanecer. Mandarina jugosa con flores delicadas.',ocasion:['Día','Trabajo','Casual'],intensidad:'Ligero',duracion:'4–6h',genero:'Unisex',temporada:'Primavera / Verano',precios:{'3ml':45,'5ml':65,'10ml':120},bot:1600},
+  {id:4,slug:'odyssey-go-mango',nombre:'Odyssey Go Mango',marca:'Armaf',cat:'arabe',emoji:'🥭',nuevo:false,foto:'',notas:{c:['Mango','Maracuyá'],h:['Frutas tropicales','Flores blancas'],f:['Vainilla','Almizcle']},desc:'Explosión frutal tropical de mango maduro. Dulce, jugoso y vibrante.',ocasion:['Día','Casual','Playa'],intensidad:'Moderado',duracion:'4–6h',genero:'Unisex',temporada:'Verano',precios:{'3ml':50,'5ml':70,'10ml':120},bot:1600},
+  {id:5,slug:'odyssey-mega',nombre:'Odyssey Mega',marca:'Armaf',cat:'arabe',emoji:'⚡',nuevo:false,foto:'',notas:{c:['Bergamota','Especias'],h:['Cedro','Patchouli'],f:['Almizcle oscuro','Ámbar']},desc:'Potente y versátil con estela duradera que impresiona.',ocasion:['Día','Noche','Trabajo'],intensidad:'Moderado',duracion:'6–8h',genero:'Masculino',temporada:'Todo el año',precios:{'3ml':40,'5ml':60,'10ml':100},bot:1400},
+  {id:6,slug:'odyssey-artisto',nombre:'Odyssey Artisto',marca:'Armaf',cat:'arabe',emoji:'🎨',nuevo:false,foto:'',notas:{c:['Bergamota','Limón'],h:['Rosa','Oud'],f:['Vainilla','Ámbar','Almizcle']},desc:'Perfumería oriental con toques modernos. Creativo, audaz y memorable.',ocasion:['Noche','Eventos','Cita'],intensidad:'Intenso',duracion:'8h+',genero:'Masculino',temporada:'Otoño / Invierno',precios:{'3ml':45,'5ml':65,'10ml':120},bot:1600},
+  {id:7,slug:'nitro-red',nombre:'Nitro Red',marca:'Armaf',cat:'arabe',emoji:'❤️‍🔥',nuevo:false,foto:'',notas:{c:['Pomelo','Bergamota','Menta'],h:['Oud rojo','Especias'],f:['Cuero','Almizcle oscuro']},desc:'Intenso y magnético. Oud rojo y cuero con presencia irresistible.',ocasion:['Noche','Cita','Salida'],intensidad:'Intenso',duracion:'8h+',genero:'Masculino',temporada:'Otoño / Invierno',precios:{'3ml':45,'5ml':65,'10ml':115},bot:1700},
+  {id:8,slug:'tag-oumo-rosso',nombre:'Tag Oumo Rosso',marca:'Tag',cat:'arabe',emoji:'🏷️',nuevo:false,foto:'',notas:{c:['Bergamota','Rosa'],h:['Cuero italiano','Iris'],f:['Ámbar','Almizcle','Madera']},desc:'Elegante y sofisticado. Delicadeza floral con profundidad de cuero italiano.',ocasion:['Trabajo','Formal','Día'],intensidad:'Moderado',duracion:'6–8h',genero:'Masculino',temporada:'Todo el año',precios:{'3ml':45,'5ml':65,'10ml':105},bot:1500},
+  {id:9,slug:'hawas-elixir',nombre:'Hawas Elixir',marca:'Rasasi',cat:'arabe',emoji:'✨',nuevo:false,foto:'',notas:{c:['Cardamomo','Bergamota'],h:['Oud','Jazmín'],f:['Ámbar','Vainilla','Sándalo']},desc:'Cardamomo fresco con profundidad de oud y dulzura de ámbar. Larga duración.',ocasion:['Noche','Eventos','Cita'],intensidad:'Intenso',duracion:'8h+',genero:'Masculino',temporada:'Otoño / Invierno',precios:{'3ml':60,'5ml':80,'10ml':150},bot:2200},
+  {id:10,slug:'hawas-tropical',nombre:'Hawas Tropical',marca:'Rasasi',cat:'arabe',emoji:'🌴',nuevo:true,foto:'',notas:{c:['Frutas tropicales','Pomelo'],h:['Coco','Flores blancas'],f:['Sándalo','Vainilla','Almizcle']},desc:'Escapada tropical sobre base cálida de sándalo y coco.',ocasion:['Día','Playa','Casual'],intensidad:'Moderado',duracion:'6–8h',genero:'Unisex',temporada:'Primavera / Verano',precios:{'3ml':75,'5ml':120,'10ml':175},bot:2500},
+  {id:11,slug:'glacier-bold',nombre:'Glacier Bold',marca:'Armaf',cat:'arabe',emoji:'🧊',nuevo:false,foto:'',notas:{c:['Menta ártica','Lima'],h:['Cedro','Bergamota'],f:['Almizcle blanco','Vetiver']},desc:'La frescura del glaciar. Menta ártica y cítricos que despiertan los sentidos.',ocasion:['Deporte','Día','Trabajo'],intensidad:'Ligero',duracion:'4–6h',genero:'Masculino',temporada:'Primavera / Verano',precios:{'3ml':45,'5ml':65,'10ml':110},bot:1500},
+  {id:12,slug:'asad-bourbon',nombre:'Asad Bourbon',marca:'Lattafa',cat:'arabe',emoji:'🥃',nuevo:false,foto:'',notas:{c:['Bourbon','Bergamota'],h:['Cuero','Tabaco'],f:['Oud','Vainilla','Sándalo']},desc:'Elegancia del bourbon envejecido en cuero y tabaco. Profunda y seductora.',ocasion:['Noche','Formal','Invierno'],intensidad:'Intenso',duracion:'8h+',genero:'Masculino',temporada:'Otoño / Invierno',precios:{'3ml':45,'5ml':65,'10ml':120},bot:1700},
+  {id:13,slug:'9pm-night-out',nombre:'9PM Night Out',marca:'Afnan',cat:'arabe',emoji:'🌙',nuevo:false,foto:'',notas:{c:['Bergamota','Manzana'],h:['Canela','Lavanda'],f:['Patchouli','Almizcle','Ámbar']},desc:'El hombre que conquista la noche. Estela magnética que atrae miradas.',ocasion:['Noche','Salida','Cita'],intensidad:'Intenso',duracion:'8h+',genero:'Masculino',temporada:'Todo el año',precios:{'3ml':55,'5ml':80,'10ml':150},bot:2000},
+  {id:14,slug:'versace-eros-edt',nombre:'Versace Eros EDT',marca:'Versace',cat:'disenador',emoji:'💙',nuevo:false,foto:'',notas:{c:['Menta','Limón','Manzana verde'],h:['Tonka','Geranio','Ambroxan'],f:['Vainilla','Cedro','Vetiver']},desc:'El icónico Eros de Versace. Frescura mediterránea sobre base cálida.',ocasion:['Día','Trabajo','Casual','Cita'],intensidad:'Moderado',duracion:'6–8h',genero:'Masculino',temporada:'Todo el año',precios:{'3ml':70,'5ml':110,'10ml':190},bot:3200},
+  {id:15,slug:'stallion-53',nombre:'Stallion 53',marca:'Stallion',cat:'arabe',emoji:'🐎',nuevo:false,foto:'',notas:{c:['Bergamota','Lima'],h:['Cedro','Vetiver'],f:['Almizcle','Ámbar','Madera']},desc:'Fuerte, libre y elegante. Frescura con base cálida y persistente.',ocasion:['Día','Trabajo','Casual'],intensidad:'Ligero',duracion:'4–6h',genero:'Masculino',temporada:'Todo el año',precios:{'3ml':40,'5ml':60,'10ml':100},bot:1400},
+];
+
+function getCat(){try{const g=JSON.parse(localStorage.getItem('dd_cat')||'[]');if(!Array.isArray(g)||!g.length)return[...CAT_BASE];const ids=new Set(g.map(p=>p.id));return[...g,...CAT_BASE.filter(p=>!ids.has(p.id))];}catch{return[...CAT_BASE];}}
+function bySlug(s){return getCat().find(p=>p.slug===s);}
+
+/* ---- PRODUCTO ACTUAL ---- */
+let prodActual = null;
+let tamSel = '5ml';
+
+function getPrecioActual(){
+  if(!prodActual) return 0;
+  return tamSel === 'bot' ? prodActual.bot : (prodActual.precios[tamSel] || 0);
+}
+
+function ocIcon(o){const ic={Día:'☀️',Noche:'🌙',Trabajo:'💼',Cita:'❤️',Eventos:'✨',Casual:'👕',Formal:'🎩',Deporte:'⚡',Salida:'🎉',Playa:'🌊',Invierno:'❄️'};return ic[o]||'✦';}
+
+function renderProd(){
+  const slug = new URLSearchParams(location.search).get('p');
+  const p = slug ? bySlug(slug) : null;
+
+  if(!p){
+    document.getElementById('prodPage').innerHTML = `
+      <div style="text-align:center;padding:5rem 1rem;color:var(--t2)">
+        <p style="font-family:var(--fd);font-size:1.5rem;margin-bottom:.75rem">Fragancia no encontrada</p>
+        <a href="index.html" style="display:inline-block;background:var(--gold);color:#0a0908;border-radius:10px;padding:.7rem 1.5rem;font-size:.82rem;font-weight:700;font-family:var(--fs);text-transform:uppercase;letter-spacing:.06em">Ver catálogo</a>
+      </div>`;
+    return;
+  }
+
+  prodActual = p;
+  document.title = p.nombre + ' — Delear Decants';
+
+  const fav = getFavs().includes(p.id);
+  const imgHTML = p.foto ? `<img src="${p.foto}" alt="${p.nombre}"/>` : '';
+  const ocasiones = Array.isArray(p.ocasion) ? p.ocasion : [];
+
+  document.getElementById('prodPage').innerHTML = `
+    <div class="prod-layout">
+      <!-- MEDIA -->
+      <div class="prod-media">
+        <div class="prod-img-box">${p.emoji}${imgHTML}</div>
+        <button class="fav-big ${fav?'on':''}" id="favBig" onclick="togFavPP()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="${fav?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <span id="favTxt">${fav?'En favoritos':'Guardar'}</span>
+        </button>
+        <button class="share-btn" onclick="compartir()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Compartir esta fragancia
+        </button>
+      </div>
+
+      <!-- INFO -->
+      <div class="prod-info">
+        <div class="pi-marca">${p.marca} · ${p.cat==='arabe'?'Fragancia Árabe':'Diseñador'}</div>
+        <h1 class="pi-nombre">${p.nombre}</h1>
+
+        ${ocasiones.length ? `<div class="pi-ocasion">${ocasiones.map(o=>`<span class="oc-tag">${ocIcon(o)} ${o}</span>`).join('')}</div>` : ''}
+
+        <p class="pi-desc">${p.desc}</p>
+
+        <!-- NOTAS OLFATIVAS -->
+        ${p.notas ? `
+        <div class="notas-sec">
+          <div class="pi-sec-title">Notas olfativas</div>
+          <div class="piramide">
+            <div class="pir-tier">
+              <span class="pir-label">Cabeza</span>
+              <div class="pir-chips">${p.notas.c.map(n=>`<span class="nota-chip nc-c">${n}</span>`).join('')}</div>
+            </div>
+            <div class="pir-tier">
+              <span class="pir-label">Corazón</span>
+              <div class="pir-chips">${p.notas.h.map(n=>`<span class="nota-chip nc-h">${n}</span>`).join('')}</div>
+            </div>
+            <div class="pir-tier">
+              <span class="pir-label">Fondo</span>
+              <div class="pir-chips">${p.notas.f.map(n=>`<span class="nota-chip nc-f">${n}</span>`).join('')}</div>
+            </div>
+          </div>
+        </div>` : ''}
+
+        <!-- QUICK INFO -->
+        <div class="qi-grid">
+          <div class="qi"><span class="qi-l">Intensidad</span><span class="qi-v">${p.intensidad||'—'}</span></div>
+          <div class="qi"><span class="qi-l">Duración</span><span class="qi-v">${p.duracion||'—'}</span></div>
+          <div class="qi"><span class="qi-l">Para</span><span class="qi-v">${p.genero||'—'}</span></div>
+          <div class="qi"><span class="qi-l">Temporada</span><span class="qi-v">${p.temporada||'—'}</span></div>
+        </div>
+
+        <!-- TAMAÑOS -->
+        <div class="pi-sec-title2">Selecciona tamaño</div>
+        <div class="tams" id="tams">
+          ${Object.entries(p.precios).map(([ml,pr])=>`
+            <button class="ptam ${ml===tamSel?'on':''}" data-ml="${ml}" onclick="selTamPP('${ml}')">
+              <span class="ptam-ml">${ml}</span>
+              <span class="ptam-tipo">Decant</span>
+              <span class="ptam-p">$${pr} MXN</span>
+            </button>`).join('')}
+          ${p.bot?`
+            <button class="ptam bot-style ${tamSel==='bot'?'on':''}" data-ml="bot" onclick="selTamPP('bot')">
+              <span class="ptam-ml">Botella</span>
+              <span class="ptam-tipo">Original completa</span>
+              <span class="ptam-p">$${p.bot.toLocaleString()} MXN</span>
+            </button>` : ''}
+        </div>
+
+        <!-- BOTONES -->
+        <div class="buy-btns">
+          <button class="btn-add-page" onclick="addCartPP()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Agregar al carrito
+          </button>
+          <a class="btn-wha-prod" href="https://wa.me/${WHA}?text=Hola! Me interesa el ${encodeURIComponent(p.nombre)} de Delear Decants. ¿Está disponible?" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Preguntar por WA
+          </a>
+        </div>
+      </div>
+    </div>`;
+
+  // Barra fija mobile
+  updBuyBar();
+
+  // WHA float con producto
+  const wf = document.getElementById('whaFloat');
+  if(wf) wf.href = `https://wa.me/${WHA}?text=Hola! Me interesa el ${encodeURIComponent(p.nombre)} de Delear Decants`;
+
+  // Relacionados
+  renderRelacionados(p);
+}
+
+function selTamPP(ml){
+  tamSel = ml;
+  document.querySelectorAll('.ptam').forEach(b=>b.classList.toggle('on',b.dataset.ml===ml));
+  updBuyBar();
+}
+
+function updBuyBar(){
+  const bb = document.getElementById('buyBar');
+  if(!prodActual||!bb) return;
+  bb.style.display = 'flex';
+  const precio = getPrecioActual();
+  document.getElementById('bbNombre').textContent = prodActual.nombre + ' · ' + tamSel;
+  document.getElementById('bbPrecio').textContent = '$' + precio.toLocaleString() + ' MXN';
+  const bbWha = document.getElementById('bbWha');
+  if(bbWha) bbWha.href = `https://wa.me/${WHA}?text=Hola! Me interesa el ${encodeURIComponent(prodActual.nombre)} (${tamSel}) de Delear Decants. ¿Está disponible?`;
+}
+
+function addCartPP(){
+  if(!prodActual) return;
+  const p = prodActual;
+  const ml = tamSel;
+  const precio = getPrecioActual();
+  const key = `${p.id}-${ml}`;
+  const c = getCart();
+  const ex = c.find(i=>i.key===key);
+  if(ex) ex.qty++;
+  else c.push({key,id:p.id,nombre:p.nombre,marca:p.marca,emoji:p.emoji,foto:p.foto||'',ml,precio,qty:1});
+  saveCart(c); badge();
+  toast(`${p.nombre} (${ml}) → carrito 🛒`);
+}
+
+function togFavPP(){
+  if(!prodActual) return;
+  let favs = getFavs();
+  const id = prodActual.id;
+  const on = favs.includes(id) ? (favs=favs.filter(x=>x!==id),false) : (favs.push(id),true);
+  localStorage.setItem('dd_favs',JSON.stringify(favs));
+  const btn = document.getElementById('favBig');
+  const txt = document.getElementById('favTxt');
+  if(btn){ btn.classList.toggle('on',on); btn.querySelector('svg').setAttribute('fill',on?'currentColor':'none'); }
+  if(txt) txt.textContent = on ? 'En favoritos' : 'Guardar';
+  toast(on ? '❤️ Guardado en favoritos' : 'Eliminado de favoritos');
+}
+
+function compartir(){
+  if(navigator.share) navigator.share({title:prodActual?.nombre,text:'Mira esta fragancia en Delear Decants',url:location.href});
+  else { navigator.clipboard?.writeText(location.href); toast('Link copiado 📋'); }
+}
+
+function renderRelacionados(p){
+  const todos = getCat().filter(x=>x.id!==p.id&&x.cat===p.cat).slice(0,4);
+  if(!todos.length) return;
+  const sec = document.getElementById('relacionados');
+  const grid = document.getElementById('relGrid');
+  if(!sec||!grid) return;
+  sec.style.display = 'block';
+  grid.innerHTML = todos.map(r=>{
+    const rImg = r.foto ? `<img src="${r.foto}" alt="${r.nombre}"/>` : '';
+    return `<div class="rcard" onclick="location.href='producto.html?p=${r.slug}'">
+      <div class="rcard-img">${r.emoji}${rImg}</div>
+      <div class="rcard-body">
+        <div class="rcard-marca">${r.marca}</div>
+        <div class="rcard-nombre">${r.nombre}</div>
+        <div class="rcard-precio">Desde $${Math.min(...Object.values(r.precios))} MXN</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---- FAVORITOS ---- */
+function getFavs(){try{return JSON.parse(localStorage.getItem('dd_favs')||'[]');}catch{return[];}}
+
+/* ---- CARRITO ---- */
+function getCart(){try{return JSON.parse(localStorage.getItem('dd_cart')||'[]');}catch{return[];}}
+function saveCart(c){localStorage.setItem('dd_cart',JSON.stringify(c));}
+function badge(){
+  const n=getCart().reduce((s,i)=>s+i.qty,0);
+  const el=document.getElementById('cartCount');
+  if(el){el.textContent=n;el.style.display=n>0?'flex':'none';}
+}
+function tots(){
+  const c=getCart(),sub=c.reduce((s,i)=>s+i.precio*i.qty,0);
+  const env=sub>=ENVIO_GRATIS?0:(sub>0?ENVIO:0);
+  return{sub,env,total:sub+env};
+}
+function renderCart(){
+  const items=document.getElementById('cpItems'),footer=document.getElementById('cpFooter');
+  if(!items)return;
+  const c=getCart();
+  if(!c.length){
+    items.innerHTML=`<div class="cp-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Carrito vacío</p><span>Agrega fragancias</span></div>`;
+    if(footer)footer.style.display='none';return;
+  }
+  items.innerHTML=c.map(i=>`
+    <div class="cp-item">
+      <div class="ci-img">${i.foto?`<img src="${i.foto}" alt="${i.nombre}"/>`:i.emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div class="ci-n">${i.nombre}</div><div class="ci-s">${i.marca} · ${i.ml}</div>
+        <div class="ci-ctrl">
+          <button class="qb" onclick="chQty('${i.key}',-1)">−</button>
+          <span class="qv">${i.qty}</span>
+          <button class="qb" onclick="chQty('${i.key}',1)">+</button>
+          <button class="qx" onclick="rmItem('${i.key}')">Quitar</button>
+        </div>
+      </div>
+      <div class="ci-p">$${(i.precio*i.qty).toLocaleString()}</div>
+    </div>`).join('');
+  if(footer)footer.style.display='flex';
+  const{sub,env,total}=tots();
+  const banner=document.getElementById('envioBanner');
+  if(banner){
+    if(env===0&&sub>0){banner.innerHTML='<span>🎉 ¡Envío gratis en tu pedido!</span>';banner.className='envio-banner gratis';}
+    else if(sub>0){banner.innerHTML=`<span>Te faltan <strong>$${ENVIO_GRATIS-sub}</strong> para envío gratis</span>`;banner.className='envio-banner pendiente';}
+    else banner.innerHTML='';
+  }
+  const el=id=>document.getElementById(id);
+  if(el('cpSub'))el('cpSub').textContent='$'+sub.toLocaleString()+' MXN';
+  if(el('cpEnvio'))el('cpEnvio').textContent=env===0?'¡Gratis! 🎉':'$'+env+' MXN';
+  if(el('cpTotal'))el('cpTotal').textContent='$'+total.toLocaleString()+' MXN';
+}
+function chQty(key,d){let c=getCart();const i=c.find(x=>x.key===key);if(!i)return;i.qty+=d;if(i.qty<=0)c=c.filter(x=>x.key!==key);saveCart(c);badge();renderCart();}
+function rmItem(key){saveCart(getCart().filter(x=>x.key!==key));badge();renderCart();}
+function abrirCarrito(){renderCart();document.getElementById('cp').classList.add('open');document.getElementById('overlay').classList.add('on');document.body.style.overflow='hidden';}
+function cerrarCarrito(){document.getElementById('cp').classList.remove('open');document.getElementById('overlay').classList.remove('on');document.body.style.overflow='';}
+function cotizarWha(){
+  const c=getCart();if(!c.length){toast('Agrega productos primero');return;}
+  const{sub,env,total}=tots();
+  const lineas=c.map(i=>`• ${i.nombre} (${i.ml}) x${i.qty} = $${(i.precio*i.qty).toLocaleString()} MXN`).join('%0A');
+  window.open(`https://wa.me/${WHA}?text=Hola! Quiero hacer un pedido en Delear Decants 🌿%0A%0A${lineas}%0A%0ASubtotal: $${sub.toLocaleString()} MXN%0AEnvío: ${env===0?'GRATIS':'$'+env} MXN%0ATotal: $${total.toLocaleString()} MXN%0A%0A¿Cómo procedo?`,'_blank');
+}
+function pagarStripe(){if(!getCart().length){toast('Agrega productos primero');return;}toast('Configura tu link de Stripe en el código');setTimeout(cotizarWha,800);}
+
+function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(t._to);t._to=setTimeout(()=>t.classList.remove('show'),2400);}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  badge();
+  renderProd();
+  document.getElementById('btnCarrito')?.addEventListener('click',abrirCarrito);
+  document.getElementById('btnWha')?.addEventListener('click',cotizarWha);
+  document.getElementById('btnStripe')?.addEventListener('click',pagarStripe);
+});
+</script>
+</body>
+</html>
